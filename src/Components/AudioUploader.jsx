@@ -70,7 +70,7 @@ const AudioUploader = () => {
 
         setIsLoading(true);
         try {
-            const response = await fetch(`http://localhost:5500/transcriptions/${user.id}`, {
+            const response = await fetch(`https://speech-to-text-backend-henna.vercel.app/transcriptions/${user.id}`, {
                 headers: { Authorization: `Bearer ${user.token}` },
             });
 
