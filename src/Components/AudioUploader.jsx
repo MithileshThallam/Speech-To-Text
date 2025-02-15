@@ -42,7 +42,7 @@ const AudioUploader = () => {
         formData.append("userId", user.id);
 
         try {
-            const response = await fetch("https://speech-to-text-backend-henna.vercel.app//transcribe", {
+            const response = await fetch("https://speech-to-text-backend-henna.vercel.app/transcribe", {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${user.token}`,
