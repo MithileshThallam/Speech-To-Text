@@ -1,22 +1,25 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom"; // ✅ Use Link
+import './Signup.css'
 
 const SignupPage = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false); // ✅ Loading state added
     const navigate = useNavigate();
 
     const handleSignup = async (e) => {
         e.preventDefault();
         setError("");
 
-        // ✅ Prevent sending empty fields
         if (!name.trim() || !email.trim() || !password.trim()) {
             setError("All fields are required.");
             return;
         }
+
+        setLoading(true); // ✅ Start loading
 
         try {
             const response = await fetch("http://localhost:5500/signup", {
@@ -36,6 +39,8 @@ const SignupPage = () => {
         } catch (err) {
             setError("Something went wrong. Please try again.");
         }
+
+        setLoading(false); // ✅ Stop loading after response
     };
 
     return (
@@ -77,8 +82,8 @@ const SignupPage = () => {
                             required
                         />
                     </div>
-                    <button type="submit" className="btn signup-btn">
-                        Sign Up
+                    <button type="submit" className="btn signup-btn" disabled={loading}>
+                        {loading ? <span className="spinner"></span> : "Sign Up"} {/* ✅ Show spinner when loading */}
                     </button>
                 </form>
                 <p className="switch-page">

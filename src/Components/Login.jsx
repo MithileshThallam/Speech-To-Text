@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import './Login.css'
 
-const LoginPage = ({ setIsAuthenticated }) => { // ✅ Accept setIsAuthenticated as a prop
+const LoginPage = ({ setIsAuthenticated }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false); // ✅ Loading state added
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setLoading(true); // ✅ Start loading
+
         try {
             const response = await fetch('http://localhost:5500/login', {
                 method: 'POST',
@@ -19,16 +23,18 @@ const LoginPage = ({ setIsAuthenticated }) => { // ✅ Accept setIsAuthenticated
             const data = await response.json();
 
             if (data.success) {
-                localStorage.setItem('user', JSON.stringify(data.user)); // ✅ Store user details
-                setIsAuthenticated(true); // ✅ Update authentication state
-                navigate('/audioupload'); // ✅ Redirect to AudioUpload.jsx
+                localStorage.setItem('user', JSON.stringify(data.user));
+                setIsAuthenticated(true);
+                navigate('/audioupload');
             } else {
-                setError(data.error || "Invalid email or password"); // ✅ Set error message
+                setError(data.error || "Invalid email or password");
             }
         } catch (error) {
             console.error('Login error:', error);
-            setError("An error occurred during login. Please try again."); // ✅ Set error message
+            setError("An error occurred during login. Please try again.");
         }
+
+        setLoading(false); // ✅ Stop loading after response
     };
 
     return (
@@ -59,8 +65,8 @@ const LoginPage = ({ setIsAuthenticated }) => { // ✅ Accept setIsAuthenticated
                             required
                         />
                     </div>
-                    <button type="submit" className="btn login-btn">
-                        Login
+                    <button type="submit" className="btn login-btn" disabled={loading}>
+                        {loading ? <span className="spinner"></span> : "Login"} {/* ✅ Show spinner when loading */}
                     </button>
                 </form>
                 <p className="switch-page">
