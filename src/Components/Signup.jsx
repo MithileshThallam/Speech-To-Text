@@ -22,7 +22,7 @@ const SignupPage = () => {
         setLoading(true); // ✅ Start loading
 
         try {
-            const response = await fetch("https://speech-to-text-backend-henna.vercel.app//signup", {
+            const response = await fetch("https://speech-to-text-backend-henna.vercel.app/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password, name }),
